@@ -25,10 +25,10 @@
 class Onehop_SMSService_Block_Adminhtml_Data_Form_Element_Orderconfirm extends Varien_Data_Form_Element_Multiselect
 {
     /**
-    * bind html in a variable
-    * 
-    * @return html
-    */
+     * bind html in a variable
+     * 
+     * @return html
+     */
     public function getElementHtml()
     {
         $html = '<b>Send notifications to your buyers whenever an order is confirmed.</b>';

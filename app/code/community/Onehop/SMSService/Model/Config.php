@@ -25,31 +25,29 @@
 class Onehop_SMSService_Model_Config
 {
     /**
-    * use curl call to check $apikey is valid or not
-    * 
-    * @param string $apikey
-    * @return json
-    */
+     * use curl call to check $apikey is valid or not
+     *
+     * @param string $apikey
+     * @return json
+     */
     public function getValidAPIKey($apikey)
     {
-        $urllink = "http://api.onehop.co/v1/api_key/validate/";
+        $urllink = 'http://api.onehop.co/v1/api_key/validate/';
         // Header
         $headers = array(
             'Accept: ',
-            'apiKey:' . $apikey
+            'apiKey:' . $apikey,
         );
-        
+
         // Send request
         $iClient = new Varien_Http_Client();
-             $iClient->setUri($urllink)
-            ->setMethod('GET')
-            ->setConfig(array(
-                    'maxredirects'=>0,
-                    'timeout'=>30,
-            ));
+        $iClient->setUri($urllink)->setMethod('GET')->setConfig(array(
+            'maxredirects' => 0,
+            'timeout' => 30,
+        ));
         $iClient->setHeaders($headers);
         $response = $iClient->request();
-        $output = json_decode($response->getBody());
+        $output   = json_decode($response->getBody());
         return $output;
     }
 
@@ -60,7 +58,7 @@ class Onehop_SMSService_Model_Config
      */
     public function isUnicodeAllowed($storeId = null)
     {
-        return (bool) Mage::getStoreConfig("smsservice/general/unicode", $storeId);
+        return (bool) Mage::getStoreConfig('smsservice/general/unicode', $storeId);
     }
 
     /**
@@ -76,17 +74,24 @@ class Onehop_SMSService_Model_Config
      */
     public function sanitizeNumber($number, $storeId = null)
     {
-        $length   = Mage::getStoreConfig("smsservice/general/min_length_with_prefix", $storeId);
-        $local    = Mage::getStoreConfig("smsservice/general/local_country", $storeId);
-        $trimzero = Mage::getStoreConfig("smsservice/general/trim_zero", $storeId);
+        $length   = Mage::getStoreConfig('smsservice/general/min_length_with_prefix', $storeId);
+        $local    = Mage::getStoreConfig('smsservice/general/local_country', $storeId);
+        $trimzero = Mage::getStoreConfig('smsservice/general/trim_zero', $storeId);
 
         $prefix = $this->getDialPrefix($local);
 
-        $number = str_replace(array(" ", "\t"), array("", ""), $number);
-        $number = ltrim($number, ($trimzero ? "+0" : "+"));
+        $number = str_replace(array(
+            ' ',
+            "\t",
+            ), array(
+            '',
+            '',
+        ), $number);
+        $number = ltrim($number, ($trimzero ? '+0' : '+'));
 
-        if (strlen($number) <= $length)
-        $number = $prefix.$number;
+        if (strlen($number) <= $length) {
+            $number = $prefix . $number;
+        }
 
         return $number;
     }
@@ -103,6 +108,6 @@ class Onehop_SMSService_Model_Config
     {
         $parts = explode(',', $localCode);
 
-        return (count($parts)==2) ? trim($parts[1]) : '';
+        return (count($parts) == 2) ? trim($parts[1]) : '';
     }
 }

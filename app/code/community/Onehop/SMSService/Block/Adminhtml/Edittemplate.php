@@ -34,14 +34,14 @@ class Onehop_SMSService_Block_Adminhtml_Edittemplate extends Mage_Adminhtml_Bloc
         $this->_controller = 'adminhtml';
 
         parent::__construct();
-
+        
         $this->_removeButton('reset');
         $this->_removeButton('save');
-
+        
         $this->_addButton('edittemplate', array(
-            'label'     => Mage::helper('smsservice')->__('Update Template'),
-            'onclick'   => 'editForm.submit();',
-            'class'     => 'save',
+            'label' => Mage::helper('smsservice')->__('Update Template'),
+            'onclick' => 'editForm.submit();',
+            'class' => 'save'
         ), 1);
     }
 

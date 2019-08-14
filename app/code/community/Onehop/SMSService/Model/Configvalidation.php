@@ -25,29 +25,30 @@
 class Onehop_SMSService_Model_Configvalidation extends Mage_Core_Model_Config_Data
 {
     /**
-    * check API key is valid or not 
-    * 
-    * @return bool
-    */
+     * check API key is valid or not
+     *
+     * @return bool
+     */
     public function _beforesave()
     {
-        $apiKey = $this->getValue(); //get the value from our config
-        $config = $this->_getConfig();
+
+        $apiKey     = $this->getValue(); // get the value from our config
+        $config     = $this->_getConfig();
         $isValidAPI = $config->getValidAPIKey($apiKey);
         if ($isValidAPI->status != 'success') {
             Mage::throwException(Mage::helper('smsservice')->__('Please enter valid API Key.'));
         }
         return true;
-    }    
-    
-    
+    }
+
     /**
-    * Get standard configuration model.
-    *
-    * @return Onehop_SMSService_Helper_Model_Config
-    */
+     * Get standard configuration model.
+     *
+     * @return Onehop_SMSService_Helper_Model_Config
+     */
     protected function _getConfig()
     {
+
         return Mage::getSingleton('smsservice/config');
     }
 }

@@ -30,55 +30,56 @@ class Onehop_SMSService_Block_Adminhtml_Send_Form extends Mage_Adminhtml_Block_W
     protected function _prepareForm()
     {
         $templateurl = $this->getUrl('smsservice/adminhtml/index/');
-        $form = new Varien_Data_Form(array(
-            'name'   => 'send_form',
-            'id'     => 'edit_form',
-            'action' => $this->getData('action'), 'method' => 'post')
-        );
+        $form        = new Varien_Data_Form(array(
+            'name' => 'send_form',
+            'id' => 'edit_form',
+            'action' => $this->getData('action'),
+            'method' => 'post'
+        ));
 
         $fieldset = $form->addFieldset('sendsms_fieldset', array(
             'legend' => Mage::helper('smsservice')->__('Send SMS'),
-            'class'  => 'fieldset'
+            'class' => 'fieldset'
         ));
 
         $fieldset->addField('mobilenumber', 'text', array(
-             'name'     => 'mobilenumber',
-             'label'    => Mage::helper('smsservice')->__('Mobile Number'),
-             'title'    => Mage::helper('smsservice')->__('Mobile Number'),
-             'required' => true
-        ));
-        
-        $fieldset->addField('senderid', 'text', array(
-             'name'     => 'senderid',
-             'label'    => Mage::helper('smsservice')->__('Sender Id'),
-             'title'    => Mage::helper('smsservice')->__('Sender Id'),
-             'required' => true
-        ));
-        
-        $fieldset->addField('smslabel', 'selectonehop', array(
-            'name'     => 'smslabel',
-            'label'    => Mage::helper('smsservice')->__('Select Label'),
-            'required' => true,
-            'options'  => Mage::getModel('smsservice/system_config_source_smsLabels')->getLableslist()
-        ));
-        
-        $fieldset->addField('smstemplate', 'selectonehop', array(
-            'name'    => 'smstemplate',
-            'label'   => Mage::helper('smsservice')->__('Select Template'),
-            'options' => Mage::getModel('smsservice/system_config_source_smsTemplates')->getTemplatesList(),
-            'onchange'=> 'getTemplate()'
-        ));
-        
-        $fieldset->addType('smstextarea', 'Varien_Data_Form_Element_Smsservicetextarea');
-        $fieldset->addField('sms_text', 'smstextarea', array(
-            'name'     => 'sms_text',
-            'label'    => Mage::helper('smsservice')->__('Message Body'),
+            'name' => 'mobilenumber',
+            'label' => Mage::helper('smsservice')->__('Mobile Number'),
+            'title' => Mage::helper('smsservice')->__('Mobile Number'),
             'required' => true
         ));
-        
+
+        $fieldset->addField('senderid', 'text', array(
+            'name' => 'senderid',
+            'label' => Mage::helper('smsservice')->__('Sender Id'),
+            'title' => Mage::helper('smsservice')->__('Sender Id'),
+            'required' => true
+        ));
+
+        $fieldset->addField('smslabel', 'selectonehop', array(
+            'name' => 'smslabel',
+            'label' => Mage::helper('smsservice')->__('Select Label'),
+            'required' => true,
+            'options' => Mage::getModel('smsservice/system_config_source_smsLabels')->getLableslist()
+        ));
+
+        $fieldset->addField('smstemplate', 'selectonehop', array(
+            'name' => 'smstemplate',
+            'label' => Mage::helper('smsservice')->__('Select Template'),
+            'options' => Mage::getModel('smsservice/system_config_source_smsTemplates')->getTemplatesList(),
+            'onchange' => 'getTemplate()'
+        ));
+
+        $fieldset->addType('smstextarea', 'Varien_Data_Form_Element_Smsservicetextarea');
+        $fieldset->addField('sms_text', 'smstextarea', array(
+            'name' => 'sms_text',
+            'label' => Mage::helper('smsservice')->__('Message Body'),
+            'required' => true
+        ));
+
         $form->setUseContainer(true);
         $this->setForm($form);
-
+        
         return parent::_prepareForm();
     }
 }

@@ -31,18 +31,18 @@ class OnehopService
      * ONEHOP SMS Service API URL
      */
     public static $serviceUrl = 'http://api.onehop.co/v1/sms/send/';
-    
+
     /**
      * to push error messange
-     * 
+     *
      * @var array
      */
     public $errors = array();
-    
+
     /**
-    * 
-    * @var array
-    */
+     *
+     * @var array
+     */
 
     public static $instance = null;
 
@@ -51,7 +51,6 @@ class OnehopService
      */
     public function __construct()
     {
-        
     }
 
     /**
@@ -59,6 +58,7 @@ class OnehopService
      */
     public static function getInstance()
     {
+
         if (is_null(self::$instance)) {
             self::$instance = new OnehopService();
         }
@@ -79,6 +79,7 @@ class OnehopService
      */
     public function getError()
     {
+
         return end($this->errors);
     }
 
@@ -97,7 +98,7 @@ class OnehopService
      * @param string $apiKey SMS Service API key
      * @param string $to Recipient phone number in international format, max 16 characters, no spaces and no leading plus or zeroes
      * @param string $text Text of the message have 700 characters limit for typing message. we are displayed left characters count underneath of message
-     * message box. uesr not be able to write more than 700 characters. 
+     * message box. uesr not be able to write more than 700 characters.
      * @return bool True on success or false on error
      */
     public function sendMessage($apiKey, $to, $text, $label, $senderid, $source)
@@ -119,42 +120,40 @@ class OnehopService
         // Header
         $headers = array(
             'Accept: ',
-            'apiKey:' . $apiKey
+            'apiKey:' . $apiKey,
         );
         // Prepare request
-        $data = array(
+        $data    = array(
             'label' => $label,
             'sms_text' => $text,
             'source' => $source,
             'sender_id' => $senderid,
-            'mobile_number' => $to
+            'mobile_number' => $to,
         );
-        
-        // Send request       
+
+        // Send request
         $iClient = new Varien_Http_Client();
-             $iClient->setUri(self::$serviceUrl)
-            ->setMethod('POST')
-            ->setConfig(array(
-                    'maxredirects'=>0,
-                    'timeout'=>30,
-            ));
+        $iClient->setUri(self::$serviceUrl)->setMethod('POST')->setConfig(array(
+            'maxredirects' => 0,
+            'timeout' => 30,
+        ));
         $iClient->setHeaders($headers);
         $iClient->setRawData(json_encode(array(
-                        'label' => $label,
-                        'sms_text' => $text,
-                        'source' => $source,
-                        'sender_id' => $senderid,
-                        'mobile_number' => $to
-                        )), "application/json;charset=UTF-8");    
+            'label' => $label,
+            'sms_text' => $text,
+            'source' => $source,
+            'sender_id' => $senderid,
+            'mobile_number' => $to,
+        )), 'application/json;charset=UTF-8');
         $response = $iClient->request();
-        
-        $output = json_decode($response->getBody()); 
-        
-        if ($output->status != 'submitted' || !$output) {
+
+        $output = json_decode($response->getBody());
+
+        if ($output->status != 'submitted' || ! $output) {
             $this->setError('Could not send the SMS.');
             return false;
         }
         // Message sent successfully
-        return true;       
+        return true;
     }
 }

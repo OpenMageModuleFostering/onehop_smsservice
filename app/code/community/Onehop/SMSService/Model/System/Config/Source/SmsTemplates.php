@@ -30,29 +30,32 @@ class Onehop_SMSService_Model_System_Config_Source_SmsTemplates
      */
     public function getTemplatesList()
     {
-        $config = Mage::getSingleton('smsservice/config');
+        $config  = Mage::getSingleton('smsservice/config');
         $options = array();
-        
-        $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
-        $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-        
-        $selecttemp = $connection->select()
-                                ->from(array($tablename), array('smstemplates_id','temp_name'))
-                                ->order('temp_name');
-        $query = $connection->query($selecttemp);
-        $template = $query->fetchAll();
 
+        $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_sms_templates');
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
+
+        $selecttemp = $connection->select()->from(array(
+            $tablename
+            ), array(
+            'smstemplates_id',
+            'temp_name',
+        ))->order('temp_name');
+        $query      = $connection->query($selecttemp);
+        // $template = $query->fetchAll();
         // No option
         $options[] = array(
             'value' => '0',
-            'label' => Mage::helper('smsservice')->__('Select Template')
+            'label' => Mage::helper('smsservice')->__('Select Template'),
         );
-        foreach ($template as $temp) {
+        while ($row = $query->fetch()) {
             $options[] = array(
-                'value' => $temp['smstemplates_id'],
-                'label' => Mage::helper('smsservice')->__('%s', $temp['temp_name'])
+                'value' => $row['smstemplates_id'],
+                'label' => Mage::helper('smsservice')->__('%s', $row['temp_name']),
             );
         }
+
         return $options;
     }
 
@@ -63,23 +66,25 @@ class Onehop_SMSService_Model_System_Config_Source_SmsTemplates
      */
     public function gettemplateInfoByID($templateid)
     {
-        $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
+        $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_sms_templates');
         $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-        $selecttemp = $connection->select()
-                                ->from(array($tablename), array('*'))
-                                ->where('smstemplates_id = '. $templateid);
-        $query = $connection->query($selecttemp);
-        $rows = $query->fetch();
+        $selecttemp = $connection->select()->from(array(
+            $tablename
+            ), array(
+            '*'
+        ))->where('smstemplates_id = ' . $templateid);
+        $query      = $connection->query($selecttemp);
+        $rows       = $query->fetch();
         return $rows;
     }
     /**
-    * get template name or template body
-    * 
-    * @param array $templateInfo
-    * @param string $fieldname
-    * 
-    * @return string
-    */
+     * get template name or template body
+     *
+     * @param array  $templateInfo
+     * @param string $fieldname
+     *
+     * @return string
+     */
     public function getTemplateFeilds($templateInfo, $fieldname)
     {
         $returnVal = '';

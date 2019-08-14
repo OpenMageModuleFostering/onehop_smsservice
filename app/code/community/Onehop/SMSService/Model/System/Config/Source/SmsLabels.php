@@ -24,7 +24,6 @@
 class Onehop_SMSService_Model_System_Config_Source_SmsLabels
 {
     public static $labelUrl = 'http://api.onehop.co/v1/labels/';
-
     /**
      * get label list using lable API URL with valid API Key
      *
@@ -41,78 +40,79 @@ class Onehop_SMSService_Model_System_Config_Source_SmsLabels
         // No option
         $options[] = array(
             'value' => '',
-            'label' => Mage::helper('smsservice')->__('Select Label')
+            'label' => Mage::helper('smsservice')->__('Select Label'),
         );
 
         // Header
         $headers = array(
             'Accept: ',
-            'apiKey:' . $apiKey
+            'apiKey:' . $apiKey,
         );
-        
+
         // Send request
         $iClient = new Varien_Http_Client();
-             $iClient->setUri(self::$labelUrl)
-            ->setMethod('GET')
-            ->setConfig(array(
-                    'maxredirects'=>0,
-                    'timeout'=>30,
-            ));
+        $iClient->setUri(self::$labelUrl)->setMethod('GET')->setConfig(array(
+            'maxredirects' => 0,
+            'timeout' => 30,
+        ));
         $iClient->setHeaders($headers);
         $response = $iClient->request();
-        $output = json_decode($response->getBody());
-        
+        $output   = json_decode($response->getBody());
+
         $labelArr  = array();
         $labelInfo = array();
         if ($output->labelsList) {
             foreach ($output->labelsList as $labelVal) {
                 $options[] = array(
-                   'value' => $labelVal,
-                   'label' => Mage::helper('smsservice')->__('%s', $labelVal)
+                    'value' => $labelVal,
+                    'label' => Mage::helper('smsservice')->__('%s', $labelVal),
                 );
             }
         } elseif ($output->message) {
-               $options[] = array(
-                   'value'    => '',
-                   'label'    => Mage::helper('smsservice')->__('Label not available'),
-                   'disabled' => 'disabled'
-                );
+            $options[] = array(
+                'value' => '',
+                'label' => Mage::helper('smsservice')->__('Label not available'),
+                'disabled' => 'disabled',
+            );
         }
-        
+
         return $options;
     }
-    
+
     /**
-    * save all values and label of list in $placeholders
-    * 
-    * @return array
-    */
+     * save all values and label of list in $placeholders
+     *
+     * @return array
+     */
     public function getAllPlaceholders()
     {
-        $options = array();
-        $placeholders = array('Customer Firstname',
-                       'Customer Lastname',
-                       'Order ID',
-                       'Product Name',
-                       'Transaction ID',
-                       'Invoice');
-       // No option
-        $options[] = array(
+
+        $options      = array();
+        $placeholders = array(
+            'Customer Firstname',
+            'Customer Lastname',
+            'Order ID',
+            'Product Name',
+            'Transaction ID',
+            'Invoice',
+        );
+        // No option
+        $options[]    = array(
             'value' => '',
-            'label' => Mage::helper('smsservice')->__('Select Label')
+            'label' => Mage::helper('smsservice')->__('Select Label'),
         );
         foreach ($placeholders as $palceVal) {
             $options[] = array(
-               'value' => '{{'.strtolower($palceVal).'}}',
-               'label' => Mage::helper('smsservice')->__('%s', $palceVal)
+                'value' => '{{' . strtolower($palceVal) . '}}',
+                'label' => Mage::helper('smsservice')->__('%s', $palceVal),
             );
         }
-        
+
         return $options;
     }
-     /**
+    /**
      * retrive API Key from confuguration table
-     * 
+     *
      * @return string
      */
     public function getApikey()

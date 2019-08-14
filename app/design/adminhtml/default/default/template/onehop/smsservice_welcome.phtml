@@ -20,15 +20,14 @@
  * @license     https://www.gnu.org/licenses/gpl-2.0.html  Open Software License (GPL2)
  */
 ?>
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="content-header">
     <h3 class="icon-head head-adminhtml">Welcome</h3>
 </div>
 <div class="middles">
     <div class="welwrapper">
         <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div>
+                <div class="column-full">
                     <div class="acc_banner">
                         <img alt="Welcome to Onehop" src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_banner.png'); ?>" usemap="#onehopmap" />
                         <map name="onehopmap">
@@ -37,12 +36,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div>
+                <div class="column-full">
                     <div class="custom_container">
                         <div class="onehop_list">
                             <h2>With Onehop on Magento, you can SMS all your:</h2>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="column-half">
                                 <ul>
                                     <li>Order Confirmations</li>
                                     <li>Shipment Confirmations</li>
@@ -50,7 +49,7 @@
                                 </ul>
                             </div>
 
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="column-half">
                                 <ul>
                                     <li>Order Closed and Order Refund</li>
                                     <li>Out of Stock Product Alerts</li>                                    
@@ -58,107 +57,77 @@
                                 </ul>
                             </div>
                         </div>
-
+                        
                         <h2 class="acc_title">Get Started with Onehop on Magento</h2>
+                        
+                        <div id="accordion" class="accordion vertical">
+                          <ul>
+                            <li>
+                              <input type="checkbox" id="checkbox-1" name="checkbox-accordion" />
+                              <label for="checkbox-1" onclick="checked(1);"><span class="seq_no">1</span> Sign up on Onehop & Integrate with Magento
+                                        <i class="indicator fa fa-caret-right" id="caret-1">&nbsp;</i></label>
+                              <div class="content"  id="content1">
+                                <ul class="acc_1_list">
+                                    <li>Go to <span class="stronger">Onehop.co</span> then <span class="stronger">Sign Up</span> or <span class="stronger">Login </span>
+                                        <br />
 
-                        <div class="panel-group" id="accordion">
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_1.png'); ?>" />
+                                    </li>
 
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                            <span class="seq_no">1</span> Sign up on Onehop & Integrate with Magento
-                                        <i class="indicator fa fa-caret-right"></i>
-                                        </a>
-                                    </h4>
-                                </div>
+                                    <li>After logging into <span class="stronger">Onehop.co</span> click on your <span class="stronger">&lt;User Name&gt;</span> then click on <span class="stronger">Profile</span>
+                                        <br />
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_2.png'); ?>" />
+                                    </li>
 
-                                <div id="collapseOne" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="acc_1_list">
-                                            <li>Go to <span class="stronger">Onehop.co</span> then <span class="stronger">Sign Up</span> or <span class="stronger">Login </span>
-                                                <br />
+                                    <li>On the <span class="stronger">Profile Page</span>, copy the <span class="stronger">API Key;</span><br />
+                                        &lbrace;generate a new API Key if none is present&rbrace;
+                                        <br />
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_3.png'); ?>" />
+                                    </li>
 
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_1.png'); ?>" />
-                                            </li>
+                                    <li>On <span class="stronger">Magento Dashboard</span> go to <span class="stronger">Onehop SMS Services > Configuration</span><br />
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_4.png'); ?>" />
+                                    </li>
 
-                                            <li>After logging into <span class="stronger">Onehop.co</span> click on your <span class="stronger">&lt;User Name&gt;</span> then click on <span class="stronger">Profile</span>
-                                                <br />
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_2.png'); ?>" />
-                                            </li>
+                                </ul>
+                              </div>
+                            </li>
+                            
+                            <li>
+                              <input type="checkbox" id="checkbox-2" name="checkbox-accordion" />
+                              <label for="checkbox-2" onclick="checked(2);"><span class="seq_no">2</span> Search, Select and Start using SMS on onehop
+                                        <i class="indicator fa fa-caret-right" id="caret-2">&nbsp;</i></label>
+                              <div class="content" id="content2">
+                                <ul class="acc_2_list">
+                                    <li>
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_1.png'); ?>" />
+                                        On <span class="stronger">Onehop.co</span> use the <span class="stronger">Search</span> to find products according to your requirement 
+                                    </li>
 
-                                            <li>On the <span class="stronger">Profile Page</span>, copy the <span class="stronger">API Key;</span><br />
-                                                &lbrace;generate a new API Key if none is present&rbrace;
-                                                <br />
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_3.png'); ?>" />
-                                            </li>
+                                    <li>
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_2.png'); ?>" />
+                                        Proceed to <span class="stronger">Checkout</span> and purchase the products you chose
+                                    </li>
 
-                                            <li>On <span class="stronger">Magento Dashboard</span> go to <span class="stronger">Onehop SMS Services > Configuration</span><br />
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_1_4.png'); ?>" />
-                                            </li>
+                                    <li>
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_3.png'); ?>" />
+                                        Find the products purchased in your <span class="stronger">Product Inventory</span> page
+                                    </li>
 
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                            <span class="seq_no">2</span> Search, Select and Start using SMS on onehop
-                                        <i class="indicator fa fa-caret-right"></i>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="acc_2_list">
-                                            <li>
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_1.png'); ?>" />
-                                                On <span class="stronger">Onehop.co</span> use the <span class="stronger">Search</span> to find products according to your requirement 
-                                                <br />
-                                            </li>
-
-                                            <li>
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_2.png'); ?>" />
-                                                Proceed to <span class="stronger">Checkout</span> and purchase the products you chose 
-                                                <br />
-                                            </li>
-
-                                            <li>
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_3.png'); ?>" />
-                                                Find the products purchased in your <span class="stronger">Product Inventory</span> page 
-                                                <br />
-                                            </li>
-
-                                            <li>
-                                                <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_4.png'); ?>" />
-                                                Follow the <span class="stronger">onboarding emails</span> to configure and start using SMS on Onehop 
-                                                <br />
-                                            </li>
-
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                                            <span class="seq_no">3</span>Send SMS from Magento
-                                        <i class="indicator fa fa-caret-right"></i>
-                                        </a>
-                                    </h4>
-                                </div>
-
-                                <div id="collapseThree" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <p class="acc_3_data">
+                                    <li>
+                                        <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/acc_2_4.png'); ?>" />
+                                        Follow the <span class="stronger">onboarding emails</span> to configure and start using SMS on Onehop 
+                                    </li>
+                                </ul>
+                              </div>
+                            </li>
+                            
+                            <li>
+                              <input type="checkbox" id="checkbox-3" name="checkbox-accordion" />
+                              <label for="checkbox-3" onclick="checked(3);"><span class="seq_no">3</span>Send SMS from Magento
+                                        <i class="indicator fa fa-caret-right" id="caret-3">&nbsp;</i></label>
+                              <div class="content" id="content3">
+                                 <p class="acc_3_data">
                                             Upon configuring your API key in the Configuration tab,
                                     you will notice these additional tabs on the menu screen.
                                         </p>
@@ -168,10 +137,12 @@
                                             <li>You can add, edit or delete templates with placeholder  texts using  <span class="stronger">Manage Templates</span> tab</li>
                                             <li>Set automated rules for sending SMS with <span class="stronger">SMS Automation</span> tab</li>
                                         </ul>
-                                    </div>
-                                </div>
-                            </div>
+                              </div>
+                            </li>
+                            
+                          </ul>
                         </div>
+                      
                         <div class="onehop_docs">
                             <h2 class="acc_title productdoc_title">Product Documentation</h2>
                             <ul class="download_sec">
@@ -183,7 +154,7 @@
                                     <a href="http://onehop.co/blog/wp-content/uploads/Onehop_User_Manual.pdf" target="_blank">Onehop marketplace guide book</a></li>
                                 <li>
                                     <img src="<?php echo Mage::getDesign()->getSkinUrl('onehop/images/pdf_icon.png'); ?>" />
-                                    <a href="http://onehop.co/docs/v1/" target="_blank">API documentation for custom development</a></li>
+                                    <a href="http://api.onehop.co/docs/" target="_blank">API documentation for custom development</a></li>
                             </ul>
                         </div>                        
                     </div>
@@ -193,17 +164,3 @@
         </div>
     </div>
 </div>
-<!--[ends] .middle -->
-<script type="text/javascript">
-    //<![CDATA[
-        var $j = jQuery.noConflict();
-        function toggleInstructions(e) {
-            $j(e.target)
-                 .prev('.panel-heading')
-                 .find("i.indicator")
-                 .toggleClass('fa-caret-down fa-caret-right');
-        }
-        $j('#accordion').on('hidden.bs.collapse', toggleInstructions);
-        $j('#accordion').on('shown.bs.collapse', toggleInstructions);
-    //]]>
-        </script>

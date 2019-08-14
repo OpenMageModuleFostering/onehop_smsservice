@@ -15,14 +15,14 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 -->
-<layout version="1.0.0">
+<layout version="1.0.1">
 <!--
 Default layout, loads most of the pages
 -->
 
     <smsservice_adminhtml_index>
         <reference name="head">
-            <action method="addJs"><script>onehop/onehop.js</script></action>
+            <action method="addJs"><script>onehop_smsservice/onehop.js</script></action>
             <action method="addCss"><name>onehop/css/smsservice.css</name></action>
         </reference>
         <reference name="content">
@@ -34,6 +34,7 @@ Default layout, loads most of the pages
     
      <smsservice_adminhtml_template>
         <reference name="head">
+            <action method="addJs"><script>onehop_smsservice/onehop.js</script></action>
             <action method="addCss"><name>onehop/css/smsservice.css</name></action>
         </reference>
         <reference name="content">
@@ -43,11 +44,9 @@ Default layout, loads most of the pages
     
     <smsservice_adminhtml_welcome>
         <reference name="head">
-            <action method="addJs"><script>onehop/jquery1.11.0.min.js</script></action>
-            <action method="addJs"><script>onehop/bootstrap.min.js</script></action>
+            <action method="addJs"><script>onehop_smsservice/onehop.js</script></action>
             <action method="addCss"><name>onehop/css/smsservice.css</name></action>
-            <action method="addCss"><name>onehop/css/smsservice_welcome.css</name></action>
-            <action method="addCss"><name>onehop/css/bootstrap.min.css</name></action>
+            <action method="addCss"><name>onehop/css/smsservice_welcome.css</name></action>            
         </reference>
         <reference name="content">
             <block type="smsservice/adminhtml_template" name="smsservice" template="onehop/smsservice_welcome.phtml"/>
@@ -56,7 +55,7 @@ Default layout, loads most of the pages
     
     <smsservice_adminhtml_automation>
         <reference name="head">
-            <action method="addJs"><script>onehop/onehop.js</script></action>
+            <action method="addJs"><script>onehop_smsservice/onehop.js</script></action>
             <action method="addCss"><name>onehop/css/smsservice.css</name></action>
         </reference>
         <reference name="content">
@@ -68,7 +67,7 @@ Default layout, loads most of the pages
     
     <smsservice_adminhtml_addtemplate>
         <reference name="head">
-            <action method="addJs"><script>onehop/onehop.js</script></action>
+            <action method="addJs"><script>onehop_smsservice/onehop.js</script></action>
             <action method="addCss"><name>onehop/css/smsservice.css</name></action>
         </reference>
         <reference name="content">

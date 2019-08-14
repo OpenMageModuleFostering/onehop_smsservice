@@ -25,10 +25,10 @@
 class Onehop_SMSService_Block_Adminhtml_Data_Form_Element_Shipmentconfirm extends Varien_Data_Form_Element_Multiselect
 {
     /**
-    * bind html in a variable
-    * 
-    * @return html
-    */
+     * bind html in a variable
+     * 
+     * @return html
+     */
     public function getElementHtml()
     {
         $html = '<b>Send shipment details to buyers after a purchase.

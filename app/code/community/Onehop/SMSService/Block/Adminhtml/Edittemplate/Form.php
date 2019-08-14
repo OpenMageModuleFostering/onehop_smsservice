@@ -29,42 +29,41 @@ class Onehop_SMSService_Block_Adminhtml_Edittemplate_Form extends Mage_Adminhtml
      */
     protected function _prepareForm()
     {
-        $templateid = $this->getRequest()->getParam('smstemplateid');
-        $templateinfo = Mage::getModel('smsservice/system_config_source_smsTemplates')
-                              ->gettemplateInfoByID($templateid);
-        $form = new Varien_Data_Form(array(
-                'name'   => 'addtemplate_form',
-                'id'     => 'edit_form',
-                'action' => $this->getUrl('smsservice/adminhtml/updatetemplate'), 'method' => 'post'));
+        $templateid   = $this->getRequest()->getParam('smstemplateid');
+        $templateinfo = Mage::getModel('smsservice/system_config_source_smsTemplates')->gettemplateInfoByID($templateid);
+        $form         = new Varien_Data_Form(array(
+            'name' => 'addtemplate_form',
+            'id' => 'edit_form',
+            'action' => $this->getUrl('smsservice/adminhtml/updatetemplate'),
+            'method' => 'post'
+        ));
 
         $fieldset = $form->addFieldset('addtemplate_fieldset', array(
             'legend' => Mage::helper('smsservice')->__('Edit Template'),
-            'class'  => 'fieldset'
+            'class' => 'fieldset'
         ));
-        
+
         $fieldset->addField('templateid', 'hidden', array(
-             'name'     => 'templateid',
-             'value'     => $templateid,
+            'name' => 'templateid',
+            'value' => $templateid
         ));
         $fieldset->addField('templatename', 'text', array(
-             'name'     => 'templatename',
-             'label'    => Mage::helper('smsservice')->__('Template Name'),
-             'value'     => Mage::getModel('smsservice/system_config_source_smstemplates')
-                                  ->getTemplateFeilds($templateinfo, 'templatename'),
-             'required' => true
+            'name' => 'templatename',
+            'label' => Mage::helper('smsservice')->__('Template Name'),
+            'value' => Mage::getModel('smsservice/system_config_source_smstemplates')->getTemplateFeilds($templateinfo, 'templatename'),
+            'required' => true
         ));
         $fieldset->addType('smstextarea', 'Varien_Data_Form_Element_Smsservicetextarea');
         $fieldset->addField('templatebody', 'smstextarea', array(
-            'name'     => 'templatebody',
-            'label'    => Mage::helper('smsservice')->__('Template Body'),
-            'value'    => Mage::getModel('smsservice/system_config_source_smstemplates')
-                                ->getTemplateFeilds($templateinfo, 'templatebody'),
+            'name' => 'templatebody',
+            'label' => Mage::helper('smsservice')->__('Template Body'),
+            'value' => Mage::getModel('smsservice/system_config_source_smstemplates')->getTemplateFeilds($templateinfo, 'templatebody'),
             'required' => true
         ));
-       
+
         $form->setUseContainer(true);
         $this->setForm($form);
-
+        
         return parent::_prepareForm();
     }
 }

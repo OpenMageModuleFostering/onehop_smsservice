@@ -24,10 +24,10 @@
 class Varien_Data_Form_Element_Smsservicetextarea extends Varien_Data_Form_Element_Textarea
 {
     /**
-    * Oneho Constructor
-    * 
-    * @param array $attributes
-    */
+     * Oneho Constructor
+     *
+     * @param array $attributes
+     */
     public function __construct($attributes = array())
     {
         parent::__construct($attributes);
@@ -52,14 +52,14 @@ class Varien_Data_Form_Element_Smsservicetextarea extends Varien_Data_Form_Eleme
         }
         return $name;
     }
-    
+
     /**
      *
      * @return string
      */
     public function getHtmlId()
     {
-    $form = $this->getForm();
+        $form = $this->getForm();
 
         if ($form) {
             return $form->getHtmlIdPrefix() . $this->getData('html_id') . $form->getHtmlIdSuffix();
@@ -68,55 +68,61 @@ class Varien_Data_Form_Element_Smsservicetextarea extends Varien_Data_Form_Eleme
         }
     }
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getHtmlAttributes()
     {
-        return array('title',
-                    'class',
-                    'style',
-                    'onclick',
-                    'onchange',
-                    'rows',
-                    'cols',
-                    'readonly',
-                    'disabled',
-                    'onkeyup',
-                    'tabindex');
+        return array(
+            'title',
+            'class',
+            'style',
+            'onclick',
+            'onchange',
+            'rows',
+            'cols',
+            'readonly',
+            'disabled',
+            'onkeyup',
+            'tabindex',
+        );
     }
     /**
-    * generate html for textarea field
-    * 
-    * Add js functions
-    * 
-    * @return string
-    */
+     * generate html for textarea field
+     *
+     * Add js functions
+     *
+     * @return string
+     */
     public function getElementHtml()
     {
         $helper = Mage::helper('smsservice');
 
-        $conurl = Mage::helper("adminhtml")->getUrl('adminhtml/system_config/edit/section/smsservice');
+        $conurl = Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit/section/smsservice');
 
         $allowedUnicode = (int) Mage::getSingleton('smsservice/config')->isUnicodeAllowed();
 
         $id       = $this->getHtmlId();
-        $remain   = $this->getHtmlId().'-remain';
-        $chars    = $this->getHtmlId().'-chars';
-        $messages = $this->getHtmlId().'-messages';
-        
-        $selPlacehoder = array('Customer','Order','Product');
-        
+        $remain   = $this->getHtmlId() . '-remain';
+        $chars    = $this->getHtmlId() . '-chars';
+        $messages = $this->getHtmlId() . '-messages';
+
+        $selPlacehoder = array(
+            'Customer',
+            'Order',
+            'Product',
+        );
+
         $this->addClass('textarea');
         $html = '';
-        
+
         $html .= '<p class="button-bar">';
-        
+
         if ($id == 'templatebody') {
             $html .= '<select name="placeholders" id="placehoders" onchange="getplaceholderVal(this)"
                     style="float: left; width: 100px; margin-right: 10px;">';
             $html .= '<option value="">- Select Type -</option>';
             foreach ($selPlacehoder as $val) {
-                $html .= '<option value="'.strtolower($val).'">'.$val.'</option>';
+                $html .= '<option value="' . strtolower($val) . '">' . $val . '</option>';
             }
             $html .= '</select>';
             $html .= '<select name="placeholders" id="templateplaceholder" style="width:170px;">';
@@ -124,14 +130,13 @@ class Varien_Data_Form_Element_Smsservicetextarea extends Varien_Data_Form_Eleme
             $html .= '</select>';
             $html .= '<span style="margin-left:10px;">
                     <a href="javascript:void(0)" onclick="insertPlaceholder()" 
-                    class="insertbtn" title="'.$helper->__('Insert').'" >Insert</a></span>';
+                    class="insertbtn" title="' . $helper->__('Insert') . '" >Insert</a></span>';
         }
-        
+
         $html .= '</p>';
-        $html .= '<textarea id="'.$id.'" name="'.$this->getName().'" '
-                .$this->serialize($this->getHtmlAttributes()).' maxlength="700">';
+        $html .= '<textarea id="' . $id . '" name="' . $this->getName() . '" ' . $this->serialize($this->getHtmlAttributes()) . ' maxlength="700">';
         $html .= $this->getEscapedValue();
-        $html .= "</textarea> <br>";
+        $html .= '</textarea> <br>';
         $html .= '<span class=""><b>You can write upto 700 characters.</b></span> <br>';
         $html .= '<span id="count"></span> ';
         $html .= $this->getAfterElementHtml();

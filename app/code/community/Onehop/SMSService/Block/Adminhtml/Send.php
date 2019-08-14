@@ -21,7 +21,7 @@
  * @package     Onehop_SMSService
  * @author      Screen-Magic Mobile Media Inc. (info@onehop.co)
  */
- 
+
 class Onehop_SMSService_Block_Adminhtml_Send extends Mage_Adminhtml_Block_Widget_Form_Container
 {
     /**
@@ -32,16 +32,16 @@ class Onehop_SMSService_Block_Adminhtml_Send extends Mage_Adminhtml_Block_Widget
         $this->_objectId   = 'page_id';
         $this->_blockGroup = 'smsservice';
         $this->_controller = 'adminhtml';
-
+        
         parent::__construct();
-
+        
         $this->_removeButton('reset');
         $this->_removeButton('save');
-
+        
         $this->_addButton('save', array(
-            'label'     => Mage::helper('smsservice')->__('Send SMS'),
-            'onclick'   => 'editForm.submit();',
-            'class'     => 'save',
+            'label' => Mage::helper('smsservice')->__('Send SMS'),
+            'onclick' => 'editForm.submit();',
+            'class' => 'save'
         ), 1);
     }
 

@@ -57,24 +57,19 @@ body{
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-.content ul {
-    margin: 0px 0px 15px 0px;
-    padding: 0px 0px 0px 15px;
+.content ul li {
+    font-size: 1em;
+    list-style: disc;
+    margin: 0px 0px 8px 0px;
 }
 
-    .content ul li {
-        font-size: 1em;
-        list-style: disc;
-        margin: 0px 0px 8px 0px;
-    }
+.content ul.subpoints li {
+    list-style: circle;
+}
 
-    .content ul.subpoints li {
-        list-style: circle;
-    }
-
-    .content ul li i {
-        font-style: italic;
-    }
+.content ul li i {
+    font-style: italic;
+}
 
 ul,
 li {
@@ -140,102 +135,169 @@ h2.acc_title {
     padding: 0 40px 0 50px;
 }
 
-    .download_sec li {
-        margin: 30px 0;
-        font-size: 18px;
-    }
-
-        .download_sec li img {
-            margin-right: 10px;
-        }
-
-        .download_sec li a {
-            color: #000000;
-            text-decoration: none;
-        }
-
-.panel-group {
-    padding: 0 40px;
+.download_sec li {
+    margin: 30px 0;
+    font-size: 18px;
 }
 
-    .panel-group .panel {
-        border: none !important;
-        border-radius: 0px !important;
-        box-shadow: none !important;
-        margin-bottom: 20px;
-    }
-
-.panel-default > .panel-heading {
-    background: none !important;
-    border: none !important;
-    font-family: 'Source Sans Pro' !important;
-    text-transform: capitalize !important;
-    color: #236977 !important;
+.download_sec li img {
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
-    .panel-default > .panel-heading + .panel-collapse > .panel-body {
-        border: none !important;
-    }
-
-#accordion .panel-title a {
-    color: #236977;
-    font-size: 23px;
+.download_sec li a {
+    color: #000000;
     text-decoration: none;
 }
 
-    #accordion .panel-title a .seq_no {
-        background: #f89928;
-        color: #ffffff;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        display: inline-block;
-        text-align: center;
-        line-height: 27px;
-        margin-right: 20px;
-    }
+#accordion label {
+    color: #236977;
+    font-size: 23px;
+    text-decoration: none;
+    font-weight: normal;
+    margin-bottom: 0;
+        cursor: pointer;
+}
+
+#accordion label .seq_no {
+    background: #f89928;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
+    line-height: 27px;
+    margin-right: 20px;
+}
     
-#accordion .panel-title a .fa-caret-right, #accordion .panel-title a .fa-caret-down{
-    color: #f89928;
-    margin-left: 15px;
+#accordion label .fa-caret-right{
+    background: url(../images/caret_right.png);
+    display: inline-block;
     vertical-align: middle;
-    font-size: 46px !important;
+    width:25px;
+    height:25px;    
+    margin-left: 15px;
 }
 
-.contact_info {
-    font-size: 18px;
-    color: #000000;
-    line-height: 40px;
-    margin-bottom: 50px;
+#accordion label .fa-caret-down{
+    background: url(../images/caret_down.png);
+    display: inline-block;
+    vertical-align: middle;
+    width:25px;
+    height:25px;    
+    margin-left: 15px;
 }
-
-    .contact_info img {
-        margin-right: 10px;
-    }
 
 .acc_1_list li {
-    font-size: 17px;
-    background: url(../images/bullet.png) left top no-repeat;
-    padding-left: 20px;
+    font-size: 17px !important;
+    background: url(../images/bullet.png) left top no-repeat !important;
+    padding-left: 20px !important;
 }
 
 .acc_2_list li {
-    font-size: 17px;
-    margin: 15px 0;
+    font-size: 17px !important;
+    margin: 15px 0 !important;
 }
 
+.acc_2_list li img {
+    vertical-align: middle;
+}
 .acc_3_data {
     font-size: 17px;
 }
 
 .acc_3_list li {
-    font-size: 17px;
-    background: url(../images/bullet.png) left center no-repeat;
-    padding-left: 20px;
-    margin: 20px 0;
+    font-size: 17px !important;
+    background: url(../images/bullet.png) left center no-repeat !important;
+    padding-left: 20px !important;
+    margin: 20px 0 !important;
 }
 
 .stronger {
     font-weight: bold;
+}
+
+.accordion {
+  padding: 0 40px;
+}
+
+.accordion ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion li {
+  margin: 0;
+  padding: 0;
+}
+
+.accordion [type=checkbox] {
+  visibility: hidden;
+}
+
+.accordion .content {
+  padding: 0 10px 0 30px;
+  overflow: hidden;
+  border: none;
+  -webkit-transition: all .5s ease-out;
+  -moz-transition: all .5s ease-out;
+}
+
+.accordion p {
+  color: #333;
+  margin: 0 0 10px;
+}
+
+.accordion h3 {
+  color: #542437;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.vertical ul li {
+  overflow: hidden;
+  margin: 0 0 25px 0;
+}
+
+.vertical ul li label {
+  padding: 10px;
+}
+
+.vertical [type=checkbox]:checked ~ label {
+  border: none;
+}
+
+.vertical ul li .content {
+  height: 0px;
+  border: none;
+  transition: all .5s ease-out;
+}
+
+.vertical [type=checkbox]:checked ~ label ~ #content1 {
+  height: 970px;
+  margin-top: 30px;
+}
+
+.vertical [type=checkbox]:checked ~ label ~ #content2 {
+  height: 230px;
+  margin-top: 15px;
+}
+
+.vertical [type=checkbox]:checked ~ label ~ #content3 {
+  height: 160px;
+  margin-top: 30px;
+}
+
+.column-full, .column-half{
+    float: left;
+}
+
+.column-full{
+    width:100%;
+}
+.column-half{
+    width:50%;
 }
 

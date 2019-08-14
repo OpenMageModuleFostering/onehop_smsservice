@@ -22,12 +22,10 @@
 ?>
 
 <?php
-$tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
-$connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-$query      = "Select * from ".$tablename;
-$rows       = $connection->fetchAll($query);
+$rows       = Mage::getSingleton('smsservice/service')->getTemplatesList();
 $srno       = 1;
-$ajaxdelete = Mage::helper("adminhtml")->getUrl("smsservice/adminhtml/ajaxdelete");
+$editurl = Mage::helper("adminhtml")->getUrl("smsservice/adminhtml/edittemplate");
+$deleteurl = Mage::helper("adminhtml")->getUrl("smsservice/adminhtml/ajaxdelete");
 ?>
 <div class="content-header">
     <h3 class="icon-head head-adminhtml">List of Templates</h3>
@@ -51,8 +49,8 @@ $ajaxdelete = Mage::helper("adminhtml")->getUrl("smsservice/adminhtml/ajaxdelete
                       <tr>
                        <td><?php echo $srno; ?></td>
                            <td><?php echo $val['temp_name']; ?></td>
-                           <td><a href="javascript:;" onclick="editTemplates(<?php echo $val['smstemplates_id']; ?>)">Edit</a></td>
-                           <td><a href="javascript:;" id="deleteTemplates" onclick="deleteTemplates(<?php echo $val['smstemplates_id']; ?>)">Delete</a></td>
+                           <td><a href="javascript:;" onclick="editTemplates(<?php echo $val['smstemplates_id']; ?>, '<?php echo $editurl; ?>')">Edit</a></td>
+                           <td><a href="javascript:;" id="deleteTemplates" onclick="deleteTemplates(<?php echo $val['smstemplates_id']; ?>, '<?php echo $deleteurl; ?>')">Delete</a></td>
                        	</tr>
                        	<?php $srno++; } ?>	 
                     </tbody></table>
@@ -64,38 +62,3 @@ $ajaxdelete = Mage::helper("adminhtml")->getUrl("smsservice/adminhtml/ajaxdelete
 </div>
 <div id="demotest"></div>
 <!--[ends] .middle -->
-
-<script type="text/javascript">
-        //<![CDATA[
-            function deleteTemplates(id) {
-                var isConf = confirm("Are you sure to delete this template?");
-                if(isConf == true) {
-                    var deleteUrl = "<?php echo $this->getUrl('smsservice/adminhtml/ajaxdelete/'); ?>";
-                    if(id > 0) {
-                        xmlhttp=new XMLHttpRequest();
-                        xmlhttp.onreadystatechange=function()
-                        {
-                            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                            {
-                                var isadded = JSON.parse(xmlhttp.responseText);
-                                
-                                if(isadded['allready_assigned'] == 1) {
-                                    alert('You can not delete this template because it\'s already assigned in SMS Automation');
-                                } else {
-                                    alert('Deleted successfully');
-                                    window.location.reload();
-                                }
-                            }
-                        }
-                        xmlhttp.open("GET",deleteUrl+'smstemplateid/'+id,true);
-                        xmlhttp.send();
-                    }
-                }
-        }
-        function editTemplates(id) {
-            var editUrl = "<?php echo $this->getUrl('smsservice/adminhtml/edittemplate'); ?>";
-            //window.location.href = editUrl+'smstemplateid/'+id;
-            window.location.href = editUrl+'smstemplateid/'+id;
-        }
-        //]]>
-        </script>

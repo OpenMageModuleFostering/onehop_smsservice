@@ -25,10 +25,10 @@
 class Onehop_SMSService_Block_Adminhtml_Data_Form_Element_Orderclose extends Varien_Data_Form_Element_Multiselect
 {
     /**
-    * bind html in a variable
-    * 
-    * @return html
-    */
+     * bind html in a variable
+     * 
+     * @return html
+     */
     public function getElementHtml()
     {
         $html = '<b>Send Refund Processed notifications to Customer when you create a Credit Memo.</b>';

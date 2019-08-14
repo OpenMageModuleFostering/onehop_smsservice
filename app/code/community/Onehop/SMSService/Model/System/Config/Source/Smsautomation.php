@@ -23,7 +23,6 @@
  */
 class Onehop_SMSService_Model_System_Config_Source_Smsautomation
 {
-
     /**
      * retrive rule set data from database
      *
@@ -31,34 +30,40 @@ class Onehop_SMSService_Model_System_Config_Source_Smsautomation
      */
     public function getDBsmsAutomation()
     {
-        $config = Mage::getSingleton('smsservice/config');
-        $tablename  = Mage::getSingleton('core/resource')->getTableName('sms_onehop_rulesets');
+        $config     = Mage::getSingleton('smsservice/config');
+        $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_sms_rulesets');
         $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-        
-        $selectRules = $connection->select()
-                                ->from(array($tablename), array('*'));
-        $query = $connection->query($selectRules);
-        $rows = $query->fetchAll();
-        
+
+        $selectRules = $connection->select()->from(array(
+            $tablename
+            ), array(
+            '*'
+        ));
+        $query       = $connection->query($selectRules);
+        $rows        = array();
+        while ($row = $query->fetch()) {
+            array_push($rows, $row);
+        }
+
         return $rows;
     }
 
     /**
-    * get actual data from $mainarray array 
-    * using $automationkey and $fieldname variables
-    * 
-    * @param array $mainarray
-    * @param string $automationkey
-    * @param string $fieldname
-    * 
-    * @return string
-    */
+     * get actual data from $mainarray array
+     * using $automationkey and $fieldname variables
+     *
+     * @param array  $mainarray
+     * @param string $automationkey
+     * @param string $fieldname
+     *
+     * @return string
+     */
     public function getValue($mainarray, $automationkey, $fieldname)
     {
         $returnval = '';
         foreach ($mainarray as $automation) {
             if ($automation['rule_name'] == $automationkey) {
-                $returnval = $automation[$fieldname];
+                $returnval = $automation[ $fieldname ];
                 break;
             }
         }

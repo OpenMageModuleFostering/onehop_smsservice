@@ -17,7 +17,7 @@
 <adminhtml>
     <menu>
       <smsservice translate="title" module="smsservice">
-          <title>Onehop SMS Service</title>
+          <title>Onehop SMS</title>
           <action>smsservice/adminhtml/welcome</action>
           <sort_order>100</sort_order>
           <children>

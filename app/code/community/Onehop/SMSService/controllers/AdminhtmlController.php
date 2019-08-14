@@ -8,18 +8,18 @@
  * It is available through the world-wide-web at this URL:
  * https://www.gnu.org/licenses/gpl-2.0.html
  *
- * @category    Onehop
- * @package     Onehop_SMSService
- * @copyright   Copyright (c) 2016 Onehop (http://www.onehop.co)
- * @license     https://www.gnu.org/licenses/gpl-2.0.html  Open Software License (GPL2)
+ * @category  Onehop
+ * @package   Onehop_SMSService
+ * @copyright Copyright (c) 2016 Onehop (http://www.onehop.co)
+ * @license   https://www.gnu.org/licenses/gpl-2.0.html Open Software License (GPL2)
  */
 
 /**
  * Controller
  *
- * @category    Onehop
- * @package     Onehop_SMSService
- * @author      Screen-Magic Mobile Media Inc. (info@onehop.co)
+ * @category Onehop
+ * @package  Onehop_SMSService
+ * @author   Screen-Magic Mobile Media Inc. (info@onehop.co)
  */
 
 class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Action
@@ -37,22 +37,17 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
             $this->_redirect('adminhtml/system_config/edit/section/smsservice');
             return;
         }
-            $templateid = $this->getRequest()->getParam('templateid');
-            
+        $templateid = $this->getRequest()->getParam('templateid');
+
         if ($templateid != '') {
-            $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-            $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
-            $selectBody = $connection->select()
-                                ->from(array('template' => $tablename), array('template.temp_body'));
-            $prepareQuery = $connection->query($selectBody);
-            $gettemplate = $prepareQuery->fetch();
+            $gettemplate = $this->_getService()->getTemplateBody($templateid);
             return $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($gettemplate));
         }
-           
+
         $this->loadLayout();
         $this->renderLayout();
     }
-   
+
     /**
      * Display list of created templates.
      *
@@ -85,7 +80,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
      * Display SMS Ruleset settings layout.
      *
      * Retrieve required data from database
-     * 
+     *
      * User can manage ruleset settings from this page
      * If API Key is not configured properly then user
      * will be redirect to configuration page.
@@ -116,6 +111,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
         $this->loadLayout();
         $this->renderLayout();
     }
+
     /**
      * Save template data
      *
@@ -125,15 +121,13 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
      */
     public function savetemplatesAction()
     {
-        $dbwrite = Mage::getSingleton("core/resource")->getConnection("core_write");
         $templatename = $this->getRequest()->getPost('templatename');
         $templatebody = $this->getRequest()->getPost('templatebody');
-        $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
-        if ($templatename && $templatebody) {
-            $dbwrite->insert($tablename, array("temp_name" => $templatename, "temp_body" => $templatebody, "submitdate" =>  'NOW()'));
-        }
+        $this->_getService()->savetemplatesAction($templatename, $templatebody);
+
         $this->_redirect('smsservice/adminhtml/template');
     }
+
     /**
      * Display form for edit template
      *
@@ -152,6 +146,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
         $this->loadLayout();
         $this->renderLayout();
     }
+
     /**
      * Update template data
      *
@@ -161,58 +156,40 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
      */
     public function updatetemplateAction()
     {
-        $dbwrite = Mage::getSingleton("core/resource")->getConnection("core_write");
         $templateid = $this->getRequest()->getPost('templateid');
         $templatename = $this->getRequest()->getPost('templatename');
         $templatebody = $this->getRequest()->getPost('templatebody');
-        $tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
-
-        if ($templateid && $templatename && $templatebody) {
-            $Updatequery = "UPDATE " . $tablename . " SET temp_name = :templatename, temp_body = :templatebody WHERE smstemplates_id = '" . $templateid . "'";
-            $bindData = array(
-                        'templatename' => $templatename,
-                        'templatebody' => $templatebody
-                        );
-            $dbwrite->query($Updatequery, $bindData);
-        }
+        $this->_getService()->updatetemplateAction($templateid, $templatename, $templatebody);
         $this->_redirect('smsservice/adminhtml/template');
     }
+
     /**
      * AJAX callback function for deleting template on template list page.
      */
     public function ajaxdeleteAction()
     {
         $templateid = $this->getRequest()->getParam('smstemplateid');
-        $Templatetablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
-        $rulesettablename  = Mage::getSingleton('core/resource')->getTableName('sms_onehop_rulesets');
-        $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-        $dbwrite = Mage::getSingleton("core/resource")->getConnection("core_write");
-        
-        $selectrule = $connection->select()
-                                ->from(array('ruleset' => $rulesettablename), array('ruleset.ruleid'))
-                                ->where('template = ' . $templateid);
-        $isruleset = $connection->query($selectrule);
-        $getruleset = $isruleset->fetch();
-        
-        if ($getruleset) {
-            $deleArr = array('allready_assigned'=>1);
-        } else {
-            $dbwrite->delete($Templatetablename, "smstemplates_id = '" . $templateid . "'");
-            $deleArr = array('deleted'=>1);
-        }
+        $deleArr = $this->_getService()->deletetemplateAction($templateid);
         return $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($deleArr));
     }
+
     /**
      * Add and update ruleset data
      *
      * Manage validation for all SMS rulesets
      *
-     * fetch post data and update to database     
+     * fetch post data and update to database
      */
     public function saveautomationAction()
     {
-        $helper  = Mage::helper('smsservice');
-        $key = array('orderConfirm','shipmentConfirm','onDelivery','outStock','orderClose');
+        $helper = Mage::helper('smsservice');
+        $key = array(
+        'orderConfirm',
+        'shipmentConfirm',
+        'onDelivery',
+        'outStock',
+        'orderClose',
+        );
         $orderbtn = $this->getRequest()->getPost('btnorderconfirm');
         $shipmentbtn = $this->getRequest()->getPost('btnshipmentconfirm');
         $ondeliverybtn = $this->getRequest()->getPost('btnondelivery');
@@ -221,49 +198,48 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
         $postdata = $this->getRequest()->getPost();
         $errormessage = '';
         $success = false;
-        
+
         if ($orderbtn) {
             $success = $this->saveOrderData($postdata, $key[0], $errormessage);
-        } else if ($shipmentbtn) {
+        } elseif ($shipmentbtn) {
             $success = $this->saveShipmentData($postdata, $key[1], $errormessage);
-        } else if ($ondeliverybtn) {
+        } elseif ($ondeliverybtn) {
             $success = $this->saveDeliveryData($postdata, $key[2], $errormessage);
-        } else if ($outstockbtn) {
+        } elseif ($outstockbtn) {
             $success = $this->saveOutStockData($postdata, $key[3], $errormessage);
-        } else if ($orderclosebtn) {
+        } elseif ($orderclosebtn) {
             $success = $this->saveOrderCloseData($postdata, $key[4], $errormessage);
-        } 
+        }
         if ($success) {
-            $this->_getSession()
-            ->addSuccess($helper->__("Rule set saved successfully."));
+            $this->_getSession()->addSuccess($helper->__('Rule set saved successfully.'));
         } else {
-            $this->_getSession()->addError($helper->__($errormessage));           
+            $this->_getSession()->addError($helper->__($errormessage));
         }
         $this->_redirectReferer();
     }
 
     /**
-    * save order ruleset
-    *
-    * @param array $orderdata
-    * @param string $key
-    * @param string $errormessage
-    *
-    * @return bool
-    */
+     * save order ruleset
+     *
+     * @param array  $orderdata
+     * @param string $key
+     * @param string $errormessage
+     *
+     * @return bool
+     */
     public function saveOrderData($orderdata, $key, &$errormessage)
     {
-        $orderfeature = $orderdata['orderactivateFeature'];
+        $orderfeature = (isset($orderdata['orderactivateFeature'])) ? $orderdata['orderactivateFeature'] : '0';
         $ordertemp = $orderdata['ordersmstemplate'];
         $orderlabel = $orderdata['ordersmslabel'];
         $ordersenderid = $orderdata['ordersenderid'];
-        if (!$ordertemp) {
+        if (! $ordertemp) {
             $errormessage = 'Please select template for order confirmation.';
             return;
-        } elseif (!$orderlabel) {
+        } elseif (! $orderlabel) {
             $errormessage = 'Label is required for order confirmation.';
             return;
-        } elseif (!$ordersenderid) {
+        } elseif (! $ordersenderid) {
             $errormessage = 'Sender id is required for order confirmation.';
             return;
         }
@@ -276,7 +252,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
             $orderdataArr['label'] = $orderlabel;
             $orderdataArr['senderid'] = $ordersenderid;
 
-            $isorderConfirm = $this->smsautomationRuleset($orderdataArr);
+            $isorderConfirm = $this->_getService()->smsautomationRuleset($orderdataArr);
             if ($isorderConfirm) {
                 return true;
             }
@@ -284,27 +260,27 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-    * save shipment ruleset
-    *
-    * @param array $shipmentdata
-    * @param string $key
-    * @param string $errormessage
-    *
-    * @return bool
-    */
+     * save shipment ruleset
+     *
+     * @param array  $shipmentdata
+     * @param string $key
+     * @param string $errormessage
+     *
+     * @return bool
+     */
     public function saveShipmentData($shipmentdata, $key, &$errormessage)
     {
-        $shipfeature = $shipmentdata['shipactivateFeature'];
+        $shipfeature = (isset($shipmentdata['shipactivateFeature'])) ? $shipmentdata['shipactivateFeature'] : '0';
         $shiptemp = $shipmentdata['shipsmstemplate'];
         $shiplabel = $shipmentdata['shipsmslabel'];
         $shipsenderid = $shipmentdata['shipsenderid'];
-        if (!$shiptemp) {
+        if (! $shiptemp) {
             $errormessage = 'Please select template for shipment confirmation.';
             return;
-        } elseif (!$shiplabel) {
+        } elseif (! $shiplabel) {
             $errormessage = 'Label is required for shipment confirmation.';
             return;
-        } elseif (!$shipsenderid) {
+        } elseif (! $shipsenderid) {
             $errormessage = 'Sender id is required for shipment confirmation.';
             return;
         }
@@ -317,7 +293,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
             $shipdataArr['label'] = $shiplabel;
             $shipdataArr['senderid'] = $shipsenderid;
 
-            $isshipConfirm = $this->smsautomationRuleset($shipdataArr);
+            $isshipConfirm = $this->_getService()->smsautomationRuleset($shipdataArr);
             if ($isshipConfirm) {
                 return true;
             }
@@ -325,27 +301,27 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-    * save ondelivery ruleset
-    *
-    * @param array $deliverydata
-    * @param string $key
-    * @param string $errormessage
-    *
-    * @return bool
-    */
+     * save ondelivery ruleset
+     *
+     * @param array  $deliverydata
+     * @param string $key
+     * @param string $errormessage
+     *
+     * @return bool
+     */
     public function saveDeliveryData($deliverydata, $key, &$errormessage)
     {
-        $ondeliveryfeature = $deliverydata['deliveryactivateFeature'];
+        $ondeliveryfeature = (isset($deliverydata['deliveryactivateFeature'])) ? $deliverydata['deliveryactivateFeature'] : '0';
         $ondeliverytemp = $deliverydata['deliverysmstemplate'];
         $ondeliverylabel = $deliverydata['deliverysmslabel'];
         $ondeliverysenderid = $deliverydata['deliverysenderid'];
-        if (!$ondeliverytemp) {
+        if (! $ondeliverytemp) {
             $errormessage = 'Please select template for On Delivery Followups.';
             return;
-        } elseif (!$ondeliverylabel) {
+        } elseif (! $ondeliverylabel) {
             $errormessage = 'Label is required for On Delivery Followups.';
             return;
-        } elseif (!$ondeliverysenderid) {
+        } elseif (! $ondeliverysenderid) {
             $errormessage = 'Sender id is required for On Delivery Followups.';
             return;
         }
@@ -358,7 +334,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
             $ondeliverydataArr['label'] = $ondeliverylabel;
             $ondeliverydataArr['senderid'] = $ondeliverysenderid;
 
-            $isonDelivery = $this->smsautomationRuleset($ondeliverydataArr);
+            $isonDelivery = $this->_getService()->smsautomationRuleset($ondeliverydataArr);
             if ($isonDelivery) {
                 return true;
             }
@@ -366,31 +342,31 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-    * save out of stock ruleset
-    *
-    * @param array $outstockdata
-    * @param string $key
-    * @param string $errormessage
-    *
-    * @return bool
-    */
+     * save out of stock ruleset
+     *
+     * @param array  $outstockdata
+     * @param string $key
+     * @param string $errormessage
+     *
+     * @return bool
+     */
     public function saveOutStockData($outstockdata, $key, &$errormessage)
     {
-        $outstockfeature = $outstockdata['outactivateFeature'];
+        $outstockfeature = (isset($outstockdata['outactivateFeature'])) ? $outstockdata['outactivateFeature'] : '0';
         $outstocktemp = $outstockdata['outsmstemplate'];
         $outstocklabel = $outstockdata['outsmslabel'];
         $outstocksenderid = $outstockdata['outsenderid'];
         $outstockadminmobile = $this->_getService()->getAdminMobile();
-        if (!$outstocktemp) {
+        if (! $outstocktemp) {
             $errormessage = 'Please select template for out of stock alerts.';
             return;
-        } elseif (!$outstocklabel) {
+        } elseif (! $outstocklabel) {
             $errormessage = 'Label is required for out of stock alerts.';
             return;
-        } elseif (!$outstocksenderid) {
+        } elseif (! $outstocksenderid) {
             $errormessage = 'Sender id is required for out of stock alerts.';
             return;
-        } elseif (!$outstockadminmobile) {
+        } elseif (! $outstockadminmobile) {
             $errormessage = 'Admin mobile is not set. Please check configuration';
             return;
         }
@@ -404,7 +380,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
             $outstockdataArr['senderid'] = $outstocksenderid;
             $outstockdataArr['adminmobile'] = $outstockadminmobile;
 
-            $isoutStock = $this->smsautomationRuleset($outstockdataArr);
+            $isoutStock = $this->_getService()->smsautomationRuleset($outstockdataArr);
             if ($isoutStock) {
                 return true;
             }
@@ -412,27 +388,27 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-    * save order close ruleset
-    *
-    * @param array $ordeclosekdata
-    * @param string $key
-    * @param string $errormessage
-    *
-    * @return bool
-    */
+     * save order close ruleset
+     *
+     * @param array  $ordeclosekdata
+     * @param string $key
+     * @param string $errormessage
+     *
+     * @return bool
+     */
     public function saveOrderCloseData($ordeclosekdata, $key, &$errormessage)
     {
-        $closeorderfeature = $ordeclosekdata['closeactivateFeature'];
+        $closeorderfeature = (isset($ordeclosekdata['closeactivateFeature'])) ? $ordeclosekdata['closeactivateFeature'] : '0';
         $closeordertemp = $ordeclosekdata['closesmstemplate'];
         $closeorderlabel = $ordeclosekdata['closesmslabel'];
         $closeordersenderid = $ordeclosekdata['closesenderid'];
-        if (!$closeordertemp) {
+        if (! $closeordertemp) {
             $errormessage = 'Please select template for order close.';
             return;
-        } elseif (!$closeorderlabel) {
+        } elseif (! $closeorderlabel) {
             $errormessage = 'Label is required for order close.';
             return;
-        } elseif (!$closeordersenderid) {
+        } elseif (! $closeordersenderid) {
             $errormessage = 'Sender id is required for order close.';
             return;
         }
@@ -445,7 +421,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
             $closeorderdataArr['label'] = $closeorderlabel;
             $closeorderdataArr['senderid'] = $closeordersenderid;
 
-            $isorderClose = $this->smsautomationRuleset($closeorderdataArr);
+            $isorderClose = $this->_getService()->smsautomationRuleset($closeorderdataArr);
             if ($isorderClose) {
                 return true;
             }
@@ -464,17 +440,17 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     public function saveAction()
     {
         $mobilenumber = $this->getRequest()->getParam('mobilenumber');
-        $text       = $this->getRequest()->getParam('sms_text');
-        $senderid   = $this->getRequest()->getParam('senderid');
-        $smslabel   = $this->getRequest()->getParam('smslabel');
+        $text = $this->getRequest()->getParam('sms_text');
+        $senderid = $this->getRequest()->getParam('senderid');
+        $smslabel = $this->getRequest()->getParam('smslabel');
         $source = '23000';
-        $helper  = Mage::helper('smsservice');
-        $config  = $this->_getConfig();
+        $helper = Mage::helper('smsservice');
+        $config = $this->_getConfig();
         $storeId = Mage::app()->getStore()->getId();
         $service = $this->_getService();
 
         // check sms text, try to send message without text has no sense
-        if (!$text) {
+        if (! $text) {
             $this->_getSession()->addError($helper->__('Message text is not defined.'));
             $this->_redirectReferer();
             return;
@@ -488,7 +464,6 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
         }
 
         // send SMS
-
         $sendSms = Mage::getModel('smsservice/sms');
         $sendSms->setLabel($smslabel);
         $sendSms->setSenderId($senderid);
@@ -497,57 +472,20 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
         $sendSms->setText($text);
 
         if ($service->send($sendSms)) {
-            $this->_getSession()->addSuccess($helper->__("SMS sent successfully."));
+            $this->_getSession()->addSuccess($helper->__('SMS sent successfully.'));
+            Mage::log('Send SMS : MOBILE : ' . $mobilenumber . ' MESSAGE BODY : ' . $text, null, 'smsservice.log');
         } else {
-            $this->_getSession()->addError($helper->__("Error comes to send SMS"));
+            $this->_getSession()->addError($helper->__('Error comes to send SMS'));
         }
 
         $this->_redirectReferer();
     }
 
     /**
-     * Add, update SMS ruleset data.
+     * Get standard configuration model.
      *
-     * @param array $ruledataArr
-     * @return true value
+     * @return Onehop_SMSService_Helper_Model_Config
      */
-    protected function smsautomationRuleset($ruledataArr)
-    {
-
-        $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-        $dbwrite = Mage::getSingleton("core/resource")->getConnection("core_write");
-
-        $tablename  = Mage::getSingleton('core/resource')->getTableName('sms_onehop_rulesets');
-        $selectRule = $connection->select()
-                                ->from(array($tablename), array('ruleid'))
-                                ->where('rule_name = "'.$ruledataArr['rule_name'].'"');
-        $isRule = $connection->query($selectRule);
-        $getRule = $isRule->fetch();        
-        if ($getRule) {
-            $dbwrite->update($tablename,
-                        array(
-                            "template" => $ruledataArr['template'],
-                            "label" => $ruledataArr['label'],
-                            "senderid" => $ruledataArr['senderid'],
-                            "active" =>  $ruledataArr['active']
-                        ), "rule_name = '" . $ruledataArr['rule_name'] . "'");
-        } else {
-            $dbwrite->insert($tablename,
-                        array(
-                            "rule_name" => $ruledataArr['rule_name'],
-                            "template" => $ruledataArr['template'],
-                            "label" => $ruledataArr['label'],
-                            "senderid" => $ruledataArr['senderid'],
-                            "active" =>  $ruledataArr['active']
-                        ));
-        }
-        return true;
-    }
-    /**
-    * Get standard configuration model.
-    *
-    * @return Onehop_SMSService_Helper_Model_Config
-    */
     protected function _getConfig()
     {
         return Mage::getSingleton('smsservice/config');
@@ -572,13 +510,14 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     {
         return Mage::getSingleton('adminhtml/session');
     }
-    
+
     /**
      * is allowed.
      *
      * @return bool
      */
-    public function _isAllowed() {
+    public function _isAllowed()
+    {
         return true;
     }
 }

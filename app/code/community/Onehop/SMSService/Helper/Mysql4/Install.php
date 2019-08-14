@@ -2,128 +2,127 @@
 /**
  * Installation helper to make installs more consistent, trackable, repeatable and debugable.
  *
- *
  * @category    Onehop
  * @package     Onehop_SMSService
  * @copyright   Copyright (c) 2016 Onehop (http://www.onehop.co)
  * @license     https://www.gnu.org/licenses/gpl-2.0.html  Open Software License (GPL2)
  */
-class Onehop_SMSService_Helper_Mysql4_Install extends Mage_Core_Helper_Abstract{
-    protected $ex_stack = array ();
-    
+class Onehop_SMSService_Helper_Mysql4_Install extends Mage_Core_Helper_Abstract
+{
+    protected $ex_stack = array();
+
     protected $_setup = null;
-    
+
     /**
      * Attempt to add a foreign key constraint on two tables
      *
      * @param unknown_type $installer
-     * @param string $table1_name
-     * @param string $column1
-     * @param string $table2_name
-     * @param string $column2=null (uses column1 if null)
-     * @param string $on_delete='CASCADE'
-     * @param string $on_update='NO ACTION'
+     * @param string       $table1_name
+     * @param string       $column1
+     * @param string       $table2_name
+     * @param string       $column2=null (uses column1 if null)
+     * @param string       $on_delete='CASCADE'
+     * @param string       $on_update='NO ACTION'
      * @return Onehop_SMSService_Helper_Mysql4_Install
      */
-    public function addFKey(&$installer, $key_name, $table1_name, $column1, $table2_name, $column2=null, $on_delete='NO ACTION', $on_update='NO ACTION')
+    public function addFKey(&$installer, $key_name, $table1_name, $column1, $table2_name, $column2 = null, $on_delete = 'NO ACTION', $on_update = 'NO ACTION')
     {
         try {
-            if(empty($column2)) {
+            if (empty($column2)) {
                 $column2 = $column1;
             }
-            $installer->getConnection()
-                ->addConstraint(
-                    $key_name,
-                    $table1_name, 
-                    $column1,
-                    $table2_name, 
-                    $column2,
-                    $on_delete, 
-                    $on_update
-           );
-        } catch(Exception $ex) {
-                $this->addInstallProblem($ex);
+            $installer->getConnection()->addConstraint($key_name, $table1_name, $column1, $table2_name, $column2, $on_delete, $on_update);
+        } catch (Exception $ex) {
+            $this->addInstallProblem($ex);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Adds an exception problem to the stack of problems that may
      * have occured during installation.
      * Ignores duplicate column name errors; ignore if the msg starts with "SQLSTATE[42S21]: Column already exists"
+     *
      * @param Exception $ex
      */
     public function addInstallProblem(Exception $ex)
     {
-        if (strpos($ex->getMessage (), "SQLSTATE[42S21]: Column already exists") !== false)
+        if (strpos($ex->getMessage(), 'SQLSTATE[42S21]: Column already exists') !== false) {
             return $this;
-        if (strpos($ex->getMessage (), "SQLSTATE[42000]: Syntax error or access violation: 1091 Can't DROP") !== false 
-                && strpos($ex->getMessage (), "check that column/key exists") !== false )
+        }
+        if (strpos($ex->getMessage(), "SQLSTATE[42000]: Syntax error or access violation: 1091 Can't DROP") !== false && strpos($ex->getMessage(), 'check that column/key exists') !== false) {
             return $this;
-        $this->ex_stack [] = $ex;
+        }
+        $this->ex_stack[] = $ex;
         return $this;
     }
-    
+
     /**
      * Returns true if any problems occured after installation
-     * @return boolean 
+     *
+     * @return boolean
      */
     public function hasProblems()
     {
-        return sizeof($this->ex_stack ) > 0;
+
+        return sizeof($this->ex_stack) > 0;
     }
     /**
      * Returns a string of problems that occured after any installation scripts were run through this helper
+     *
      * @return string message to display to the user
      */
     public function getProblemsString()
     {
-        $msg = $this->__("The following errors occured while trying to install the module.");
+
+        $msg = $this->__('The following errors occured while trying to install the module.');
         $msg .= "\n<br>";
-        foreach($this->ex_stack as $ex_i => $ex) {
+        foreach ($this->ex_stack as $ex_i => $ex) {
             $msg .= "<b>#{$ex_i}: </b>";
-            if(Mage::getIsDeveloperMode()) {
+            if (Mage::getIsDeveloperMode()) {
                 $msg .= nl2br($ex);
             } else {
-                $msg .= $ex->getMessage ();
+                $msg .= $ex->getMessage();
             }
             $msg .= "\n<br>";
         }
         $msg .= "\n<br>";
-        $msg .= $this->__("If any of these problems were unexpected, I recommend that you contact the module support team to avoid problems in the future.");
+        $msg .= $this->__('If any of these problems were unexpected, I recommend that you contact the module support team to avoid problems in the future.');
         return $msg;
     }
-    
+
     /**
      * Clears any insall problems (exceptions) that were in the stack
      */
     public function clearProblems()
     {
-        $this->ex_stack = array ();
+
+        $this->ex_stack = array();
         return $this;
     }
-      
+
     /**
-     * Runs a SQL query using the install resource provided and 
-     * remembers any errors that occur. 
+     * Runs a SQL query using the install resource provided and
+     * remembers any errors that occur.
      *
      * @param unknown_type $installer
-     * @param string $sql
+     * @param string       $sql
      * @return Onehop_SMSService_Helper_Mysql4_Install
      */
     public function attemptQuery(&$installer, $sql)
     {
         try {
             $installer->run($sql);
-        } catch(Exception $ex) {
+        } catch (Exception $ex) {
             $this->addInstallProblem($ex);
         }
         return $this;
     }
-    
+
     /**
      * Creates an installation message notice in the backend.
+     *
      * @param string $msg_title
      * @param string $msg_desc
      * @param string $url=null if null default URL is used.
@@ -131,23 +130,23 @@ class Onehop_SMSService_Helper_Mysql4_Install extends Mage_Core_Helper_Abstract{
     public function createInstallNotice($msg_title, $msg_desc, $url = null, $severity = null)
     {
         $message = Mage::getModel('adminnotification/inbox');
-        if( $message ) {
-            $message->setDateAdded(date("c",time()));
-        
-            if($url == null){
-                $url = "https://github.com/onehop/Magento-Onehop-SMSService-Extension";
+        if ($message) {
+            $message->setDateAdded(date('c', time()));
+
+            if ($url == null) {
+                $url = 'https://github.com/onehop/Magento-Onehop-SMSService-Extension';
             }
-        
+
             if ($severity === null) {
                 $severity = Mage_AdminNotification_Model_Inbox::SEVERITY_NOTICE;
             }
-        
+
             // If problems occured increase severity and append logged messages.
-            if(Mage::helper('smsservice/mysql4_install' )->hasProblems ()){
+            if (Mage::helper('smsservice/mysql4_install')->hasProblems()) {
                 $severity = Mage_AdminNotification_Model_Inbox::SEVERITY_MINOR;
-                $msg_title .= " Problems may have occured during installation.";
-                $msg_desc .= " " . Mage::helper('smsservice/mysql4_install')->getProblemsString();
-                Mage::helper('smsservice/mysql4_install' )->clearProblems();
+                $msg_title .= ' Problems may have occured during installation.';
+                $msg_desc .= ' ' . Mage::helper('smsservice/mysql4_install')->getProblemsString();
+                Mage::helper('smsservice/mysql4_install')->clearProblems();
             }
             $message->setTitle($msg_title);
             $message->setDescription($msg_desc);
@@ -157,20 +156,19 @@ class Onehop_SMSService_Helper_Mysql4_Install extends Mage_Core_Helper_Abstract{
         }
         return $this;
     }
-    
+
     /**
      * Clears cache and prepares anything that needs to generally happen before running DB install scripts.
      */
     public function prepareForDb()
     {
-        
+
         try {
             Mage::app()->getCacheInstance()->flush();
-            
         } catch (Exception $ex) {
-            $this->addInstallProblem("Problem clearing cache:". $ex);
+            $this->addInstallProblem('Problem clearing cache:' . $ex);
         }
-        
+
         return $this;
-    }   
+    }
 }

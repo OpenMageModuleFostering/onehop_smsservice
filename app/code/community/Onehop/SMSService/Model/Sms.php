@@ -76,10 +76,10 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
     protected $_customData = null;
 
     /**
-    * @param string $label
-    * 
-    * @return Onehop_SMSService_Model_Sms
-    */
+     * @param string $label
+     *
+     * @return Onehop_SMSService_Model_Sms
+     */
     public function setLabel($label)
     {
         $this->_label = $label;
@@ -94,6 +94,7 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
      */
     public function getLabel()
     {
+
         return $this->_label;
     }
 
@@ -120,6 +121,7 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
      */
     public function getNumber()
     {
+
         return $this->_number;
     }
 
@@ -143,6 +145,7 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
      */
     public function getSource()
     {
+
         return $this->_source;
     }
 
@@ -168,6 +171,7 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
      */
     public function getCountry()
     {
+
         return $this->_country;
     }
 
@@ -191,6 +195,7 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
      */
     public function getText()
     {
+
         return $this->_text;
     }
 
@@ -214,6 +219,7 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
      */
     public function getSenderId()
     {
+
         return $this->_senderid;
     }
 
@@ -226,7 +232,7 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
      * Method returns $this for kepp the influence interface.
      *
      * @param string $key
-     * @param mixed $data
+     * @param mixed  $data
      * @return Onehop_SMSService_Model_Sms
      */
     public function addCustomData($key, $data)
@@ -247,9 +253,9 @@ class Onehop_SMSService_Model_Sms extends Varien_Object
     public function getCustomData($key = null)
     {
         if ($key) {
-            $data = $this->_customData->getData($key);    
+            $data = $this->_customData->getData($key);
         } else {
-            $data = $this->_customData->getData();    
+            $data = $this->_customData->getData();
         }
         return $data;
     }

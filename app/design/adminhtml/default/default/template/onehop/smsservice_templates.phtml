@@ -1,0 +1,101 @@
+<?php
+/**
+ * SMS SMSService
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (GPL2)
+ * It is available through the world-wide-web at this URL:
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ * 
+ * @category    Onehop
+ * @package     Onehop_SMSService
+ * @copyright   Copyright (c) 2016 Onehop (http://www.onehop.co)
+ * @license     https://www.gnu.org/licenses/gpl-2.0.html  Open Software License (GPL2)
+ */
+?>
+
+<?php
+$tablename  = Mage::getSingleton('core/resource')->getTableName('onehop_smstemplates');
+$connection = Mage::getSingleton('core/resource')->getConnection('core_read');
+$query      = "Select * from ".$tablename;
+$rows       = $connection->fetchAll($query);
+$srno       = 1;
+$ajaxdelete = Mage::helper("adminhtml")->getUrl("smsservice/adminhtml/ajaxdelete");
+?>
+<div class="content-header">
+    <h3 class="icon-head head-adminhtml">List of Templates</h3>
+    
+    <a class="sample" href="<?php echo Mage::helper("adminhtml")->getUrl("smsservice/adminhtml/addtemplate"); ?>"><button class="btn btn-default" name="addTemplateBtn" style="float: right;"><span style="font-size: 16px;padding-right: 5px; bold;">+</span>Add Template</button></a>
+    
+</div>
+<div class="middles">
+    <div class="container"><!-- accomodates the section-menu by border width (for IE bug) -->
+        <div class="main">
+            <div class="content-container"><!-- content positioning -->
+                <div class="content"><!-- content presentation -->
+                 	<table width="100%" border="0" class="templatesList">
+                       	<tbody><tr>
+                           <th>No.</th>
+                           <th>Template Name</th>
+                           <th>Edit</th>
+                           <th>Delete</th>
+                       </tr>
+                       <?php foreach($rows as $val) { ?>
+                      <tr>
+                       <td><?php echo $srno; ?></td>
+                           <td><?php echo $val['temp_name']; ?></td>
+                           <td><a href="javascript:;" onclick="editTemplates(<?php echo $val['smstemplates_id']; ?>)">Edit</a></td>
+                           <td><a href="javascript:;" id="deleteTemplates" onclick="deleteTemplates(<?php echo $val['smstemplates_id']; ?>)">Delete</a></td>
+                       	</tr>
+                       	<?php $srno++; } ?>	 
+                    </tbody></table>
+                </div>
+            </div>
+<!--[ends] .content-container -->
+        </div>
+    </div>
+</div>
+<div id="demotest"></div>
+<!--[ends] .middle -->
+
+<script type="text/javascript">
+        //<![CDATA[
+            function deleteTemplates(id) {
+                var isConf = confirm("Are you sure to delete this template?");
+                if(isConf == true) {
+                    var deleteUrl = "<?php echo $this->getUrl('smsservice/adminhtml/ajaxdelete/'); ?>";
+                    if(id > 0) {
+                        xmlhttp=new XMLHttpRequest();
+                        xmlhttp.onreadystatechange=function()
+                        {
+                            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                            {
+                                var isadded = JSON.parse(xmlhttp.responseText);
+                                
+                                if(isadded['allready_assigned'] == 1) {
+                                    alert('You can not delete this template because it\'s already assigned in SMS Automation');
+                                } else {
+                                    alert('Deleted successfully');
+                                    window.location.reload();
+                                }
+                            }
+                        }
+                        xmlhttp.open("GET",deleteUrl+'smstemplateid/'+id,true);
+                        xmlhttp.send();
+                    }
+                }
+        }
+        function editTemplates(id) {
+            var editUrl = "<?php echo $this->getUrl('smsservice/adminhtml/edittemplate'); ?>";
+            //window.location.href = editUrl+'smstemplateid/'+id;
+            window.location.href = editUrl+'smstemplateid/'+id;
+        }
+        //]]>
+        </script>

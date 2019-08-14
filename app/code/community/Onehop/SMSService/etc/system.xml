@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<config>
+  <tabs>
+    <smsmagic module="smsservice" translate="label">
+      <label>OneHop SMS Extensions</label>
+      <sort_order>600</sort_order>
+      <show_in_default>1</show_in_default>
+      <show_in_website>0</show_in_website>
+      <show_in_store>0</show_in_store>
+    </smsmagic>
+  </tabs>
+  <sections>
+     <smsservice translate="label" module="smsservice">
+        <class>separator-top</class>
+        <label>Onehop SMS Services</label>
+        <tab>smsmagic</tab>
+        <sort_order>100</sort_order>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>1</show_in_store>
+        <groups>
+	        <general translate="label" module="smsservice">
+                <label>Configuration</label>
+                <sort_order>20</sort_order>
+                <show_in_default>1</show_in_default>
+        		<show_in_website>1</show_in_website>
+                <show_in_store>1</show_in_store>
+                <expanded>1</expanded>
+                <fields>
+                  <sms_onehop_apiKey translate="label">
+                      <label>apiKey</label>
+                      <frontend_type>text</frontend_type>
+                      <validate>required-entry</validate>
+                      <backend_model>smsservice/configvalidation</backend_model>
+                      <comment>The API Key is used to authenticate in order to send SMS.</comment>
+                      <sort_order>20</sort_order>
+                      <show_in_default>1</show_in_default>
+                      <show_in_website>0</show_in_website>
+                      <show_in_store>0</show_in_store>
+                  </sms_onehop_apiKey>
+                </fields>
+            </general>
+            <mobile translate="label" module="smsservice">
+                <label>Admin Mobile</label>
+                <sort_order>40</sort_order>
+                <show_in_default>1</show_in_default>
+        		<show_in_website>1</show_in_website>
+                <show_in_store>1</show_in_store>
+                <expanded>1</expanded>
+                <fields>
+                  <sms_onehop_admin_mobile translate="label">
+                      <label>Admin Mobile</label>
+                      <frontend_type>text</frontend_type>
+                      <validate>required-entry validate-length maximum-length-10 minimum-length-10 validate-digits</validate>
+                      <sort_order>40</sort_order>
+                      <show_in_default>1</show_in_default>
+                      <show_in_website>0</show_in_website>
+                      <show_in_store>0</show_in_store>
+                  </sms_onehop_admin_mobile>
+                </fields>
+            </mobile>
+        </groups>
+    </smsservice >
+  </sections>
+</config>

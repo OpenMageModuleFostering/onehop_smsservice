@@ -1,0 +1,52 @@
+<!--
+/**
+ * SMS Service
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * It is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ *
+ * @category    Onehop
+ * @package     Onehop_SMSService
+ * @copyright   Copyright (c) 2013 Onehop s.r.o (http://www.onehop.net/)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<adminhtml>
+    <menu>
+      <smsservice translate="title" module="smsservice">
+          <title>Onehop SMS Service</title>
+          <action>smsservice/adminhtml/welcome</action>
+          <sort_order>100</sort_order>
+          <children>
+            <welcome>
+                <title>Welcome</title>
+                <action>smsservice/adminhtml/welcome</action>
+                <sort_order>10</sort_order>
+            </welcome>
+            <config>
+                <title>Configuration</title>
+                <action>adminhtml/system_config/edit/section/smsservice</action>
+                <sort_order>20</sort_order>
+            </config>
+            <send>
+                <title>Send SMS</title>
+                <action>smsservice/adminhtml/index</action>
+                <sort_order>40</sort_order>
+            </send>
+            <automation>
+                <title>SMS Automation</title>
+                <action>smsservice/adminhtml/automation</action>
+                <sort_order>50</sort_order>
+            </automation>
+            <template>
+                <title>Manage Templates</title>
+                <action>smsservice/adminhtml/template</action>
+                <sort_order>60</sort_order>
+            </template>
+          </children>
+      </smsservice>
+  </menu> 
+</adminhtml>

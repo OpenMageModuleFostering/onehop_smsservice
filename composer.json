@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/Onehop_SMSService",
+    "type": "magento-module",
+    "license": "GPL",
+    "homepage": "",
+    "description": "Easily Send SMSes on Magento. Search, Compare and Buy the best SMS products. Switch providers with one click using Labels.",
+    "authors": [
+    {
+        "name": "Screen-Magic Mobile Media Inc",
+        "email": "info@onehop.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

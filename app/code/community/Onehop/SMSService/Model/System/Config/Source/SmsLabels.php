@@ -61,7 +61,7 @@ class Onehop_SMSService_Model_System_Config_Source_SmsLabels
 
         $labelArr  = array();
         $labelInfo = array();
-        if ($output->labelsList) {
+        if ($output && isset($output) && isset($output->labelsList) && $output->labelsList) {
             foreach ($output->labelsList as $labelVal) {
                 $options[] = array(
                     'value' => $labelVal,

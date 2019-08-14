@@ -231,7 +231,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     {
         $orderfeature = (isset($orderdata['orderactivateFeature'])) ? $orderdata['orderactivateFeature'] : '0';
         $ordertemp = $orderdata['ordersmstemplate'];
-        $orderlabel = $orderdata['ordersmslabel'];
+        $orderlabel = (isset($orderdata['ordersmslabel'])) ? $orderdata['ordersmslabel'] : '';
         $ordersenderid = $orderdata['ordersenderid'];
         if (! $ordertemp) {
             $errormessage = 'Please select template for order confirmation.';
@@ -272,7 +272,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     {
         $shipfeature = (isset($shipmentdata['shipactivateFeature'])) ? $shipmentdata['shipactivateFeature'] : '0';
         $shiptemp = $shipmentdata['shipsmstemplate'];
-        $shiplabel = $shipmentdata['shipsmslabel'];
+        $shiplabel = (isset($shipmentdata['shipsmslabel'])) ? $shipmentdata['shipsmslabel'] : '';
         $shipsenderid = $shipmentdata['shipsenderid'];
         if (! $shiptemp) {
             $errormessage = 'Please select template for shipment confirmation.';
@@ -313,7 +313,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     {
         $ondeliveryfeature = (isset($deliverydata['deliveryactivateFeature'])) ? $deliverydata['deliveryactivateFeature'] : '0';
         $ondeliverytemp = $deliverydata['deliverysmstemplate'];
-        $ondeliverylabel = $deliverydata['deliverysmslabel'];
+        $ondeliverylabel = (isset($deliverydata['deliverysmslabel'])) ? $deliverydata['deliverysmslabel'] : '';
         $ondeliverysenderid = $deliverydata['deliverysenderid'];
         if (! $ondeliverytemp) {
             $errormessage = 'Please select template for On Delivery Followups.';
@@ -354,7 +354,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     {
         $outstockfeature = (isset($outstockdata['outactivateFeature'])) ? $outstockdata['outactivateFeature'] : '0';
         $outstocktemp = $outstockdata['outsmstemplate'];
-        $outstocklabel = $outstockdata['outsmslabel'];
+        $outstocklabel = (isset($outstockdata['outsmslabel'])) ? $outstockdata['outsmslabel'] : '';
         $outstocksenderid = $outstockdata['outsenderid'];
         $outstockadminmobile = $this->_getService()->getAdminMobile();
         if (! $outstocktemp) {
@@ -400,7 +400,7 @@ class Onehop_SMSService_AdminhtmlController extends Mage_Adminhtml_Controller_Ac
     {
         $closeorderfeature = (isset($ordeclosekdata['closeactivateFeature'])) ? $ordeclosekdata['closeactivateFeature'] : '0';
         $closeordertemp = $ordeclosekdata['closesmstemplate'];
-        $closeorderlabel = $ordeclosekdata['closesmslabel'];
+        $closeorderlabel = (isset($ordeclosekdata['closesmslabel'])) ? $ordeclosekdata['closesmslabel'] : '';
         $closeordersenderid = $ordeclosekdata['closesenderid'];
         if (! $closeordertemp) {
             $errormessage = 'Please select template for order close.';

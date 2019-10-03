@@ -1,5 +1,5 @@
 {
-    "name": "OpenMageModuleFostering\/Onehop_SMSService",
+    "name": "openmage-module-fostering\/onehop_smsservice",
     "type": "magento-module",
     "license": "GPL",
     "homepage": "",
